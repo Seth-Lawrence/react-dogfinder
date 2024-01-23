@@ -1,5 +1,7 @@
 import React from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
+import DogDetails from './DogDetails';
+import DogList from './DogList';
 
 
 function RouteList() {

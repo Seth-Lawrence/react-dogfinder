@@ -1,6 +1,10 @@
 import './App.css';
-import React, {useState, useEffect} from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
+import Navbar from './Navbar';
+import RouteList from './RouteList';
+
+
 
 
 /**
@@ -15,21 +19,56 @@ import { BrowserRouter } from 'react-router-dom';
  * App -> {NavBar, RoutesList}
  */
 
-async function App() {
-  const [dataFetch, setDataFetch] = useState();
+function App() {
+  const [dataFetch, setDataFetch] = useState({
+    data: null,
+    isLoading: true
+  });
 
   //AJAX request for dog list
   //Asynchronous? How to delay this so it doesn't auto fail when Promise first
   //returned?
 
-  const response = await fetch("http://localhost:5001/dogs");
-  const dogs = await response.json();
+  // useEffect(function fetchDogWhenMounted() {
+  //   async function fetchDog() {
+  //     const response = await fetch("http://localhost:5001/dogs");
+  //     const dogs = await response.json();
+  //     setDataFetch({
+  //       data: dogs,
+  //       isLoading: false
+  //     });
+  //   }
+  // })
+
+  //conditional logic that runs this only when we don't have dogs
+  //
+
+  async function fetchDog() {
+    const response = await fetch("http://localhost:5001/dogs");
+    const dogs = await response.json();
+    setDataFetch({
+      data: dogs,
+      isLoading: false
+    });
+  }
+
+  if (dataFetch.isLoading) {
+    fetchDog(); //don't care what this returns, we're going to render a loading screen
+    return (<div>Loading...</div>);
+  }
+
+
 
   return (
     <div className="App">
-      <Navbar dogs={dogs}/>
-      <RouteList />
+      {dataFetch.dogs}
+      {console.log(dataFetch.data)}
+      <BrowserRouter>
+        <Navbar dogs={dataFetch.data} />
+        <RouteList />
+      </BrowserRouter>
     </div>
+
   );
 }
 

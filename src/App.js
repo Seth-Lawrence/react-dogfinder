@@ -65,7 +65,7 @@ function App() {
       {console.log(dataFetch.data)}
       <BrowserRouter>
         <Navbar dogs={dataFetch.data} />
-        <RouteList />
+        <RouteList dogs={dataFetch.data}/>
       </BrowserRouter>
     </div>
 
